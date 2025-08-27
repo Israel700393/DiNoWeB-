@@ -257,7 +257,7 @@ main{display:none}
   </div>
 
   <footer>
-    <small>Feito para crianças: conteúdo educativo. israel todos direitos reservados.</small>
+    <small>Feito para crianças: conteúdo educativo. DINOWORD todos direitos reservados.</small>
   </footer>
 </main>
 
@@ -359,7 +359,7 @@ let quizStarted = false;
 
 function promptStartQuiz(){
   Swal.fire
-   .then(result=>{
+  .then(result=>{
     if(result.isConfirmed){
       quizStarted = true;
       qIndex = 0;
@@ -419,7 +419,7 @@ document.getElementById('nextQ').addEventListener('click',()=>{
   loadQ();
 });
 
-// Recomeçar com confirmação SweetAlert
+// Recomeçar  confirmação SweetAlert
 document.getElementById('restart').addEventListener('click',()=>{
   Swal.fire({
     title: 'começar quiz?',
@@ -432,12 +432,12 @@ document.getElementById('restart').addEventListener('click',()=>{
     if(result.isConfirmed){
       qIndex = 0; score = 0; quizStarted = true;
       loadQ();
-      Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz iniciado', showConfirmButton:false, timer:1200});
+      Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz reiniciado', showConfirmButton:false, timer:1200});
     }
   });
 });
 
-// confetti simples (mantive sua função original)
+// confetti 
 function confetti(){ 
   const c=document.createElement('div');
   c.style.position='fixed';
@@ -553,6 +553,3 @@ themeToggle.addEventListener('click', () => {
 </script>
 </body>
 </html>
-
-
-
