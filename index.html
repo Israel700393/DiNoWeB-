@@ -63,7 +63,7 @@ footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted)}
   animation: cardEntry 1s forwards;
 }
 @keyframes cardEntry{
-  to{opacity:1; transform:scale(1);}
+  to{opacity:1; transform:scale(1);} 
 }
 #startCard #startTour {
   background: linear-gradient(135deg, #6AA84F, #8FB339); /* verde floresta */
@@ -104,8 +104,14 @@ body{
   background:var(--bg);
   color:var(--text);
 }
-.card{background:var(--card);}
+.card{background:var(--card);} 
+/* Hide main until tour starts */
+main{display:none}
 </style>
+
+<!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
 <header>
@@ -295,7 +301,8 @@ document.querySelectorAll('.thumb').forEach(t=>{
 });
 document.getElementById('closeModal').addEventListener('click',()=>{
   document.getElementById('modal').style.display='none';
-  document.getElementById('videoContainer').innerHTML='';
+  const vc = document.getElementById('videoContainer');
+  if(vc) vc.innerHTML='';
 });
 
 // --- Flashcards com voz ---
@@ -323,7 +330,7 @@ function speakText(text){
   }
 }
 
-// --- Quiz ---
+// --- Quiz (com SweetAlert2) ---
 const questions = [
   {q:'Qual dinossauro tinha três chifres?', options:['Tiranossauro','Tricerátopo','Velociraptor'], a:1},
   {q:'Qual era carnívoro?', options:['Tricerátopo','Brachiossauro','Tiranossauro'], a:2},
@@ -331,37 +338,112 @@ const questions = [
 ];
 let qIndex=0, score=0;
 const optionsEl=document.getElementById('options');
+
 function loadQ(){
-  const que=questions[qIndex];
-  document.getElementById('qText').innerHTML=`<strong>${que.q}</strong>`;
-  optionsEl.innerHTML='';
-  que.options.forEach((op,i)=>{
-    const b=document.createElement('div'); b.className='option'; b.tabIndex=0; b.innerText=op;
-    b.addEventListener('click',()=>handleAnswer(b,i));
-    b.addEventListener('keydown',e=>{if(e.key==='Enter') handleAnswer(b,i)});
+  const que = questions[qIndex];
+  document.getElementById('qText').innerHTML = `<strong>${que.q}</strong>`;
+  optionsEl.innerHTML = '';
+  que.options.forEach((op, i) => {
+    const b = document.createElement('div');
+    b.className = 'option';
+    b.tabIndex = 0;
+    b.innerText = op;
+    b.addEventListener('click', () => handleAnswer(b, i));
+    b.addEventListener('keydown', e => { if (e.key === 'Enter') handleAnswer(b, i); });
     optionsEl.appendChild(b);
   });
 }
+
+// flag para controlar o primeiro carregamento do quiz
+let quizStarted = false;
+
+function promptStartQuiz(){
+  Swal.fire({
+    title: 'Pronto para começar o quiz?',
+    text: 'Vamos testar seus conhecimentos sobre dinossauros!',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, começar',
+    cancelButtonText: 'Agora não'
+  }).then(result=>{
+    if(result.isConfirmed){
+      quizStarted = true;
+      qIndex = 0;
+      score = 0;
+      loadQ();
+      Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz iniciado', showConfirmButton:false, timer:1200});
+    } else {
+      document.getElementById('qText').innerHTML = '<em>Clique em "Recomeçar" para iniciar o quiz quando quiser.</em>';
+      optionsEl.innerHTML = '';
+    }
+  });
+}
+
+function showChooseAlert(){
+  Swal.fire({icon:'info', title:'Escolha uma resposta antes de continuar!', timer:1500, showConfirmButton:false, toast:true, position:'top'});
+}
+
 function handleAnswer(el,i){
-  const correct = (i===questions[qIndex].a);
-  if(correct){el.classList.add('correct'); score++; document.getElementById('soundCorrect').play(); confetti();}
-  else{el.classList.add('wrong'); document.getElementById('soundWrong').play();}
+  if(el.classList.contains('correct') || el.classList.contains('wrong')) return;
+  const correct = (i === questions[qIndex].a);
+  if(correct){
+    el.classList.add('correct');
+    score++;
+    document.getElementById('soundCorrect').play();
+    Swal.fire({toast:true, position:'top-end', icon:'success', title:'Acertou!', showConfirmButton:false, timer:1000});
+    confetti();
+  } else {
+    el.classList.add('wrong');
+    document.getElementById('soundWrong').play();
+    Swal.fire({toast:true, position:'top-end', icon:'error', title:'Errado!', showConfirmButton:false, timer:1000});
+  }
   document.querySelectorAll('#options .option').forEach(o=>o.style.pointerEvents='none');
 }
+
+// Próxima
 document.getElementById('nextQ').addEventListener('click',()=>{
+  if(!quizStarted){
+    promptStartQuiz();
+    return;
+  }
   if(document.querySelectorAll('.option.correct, .option.wrong').length === 0){
-    alert('Escolha uma resposta antes de continuar!');
+    showChooseAlert();
     return;
   }
   qIndex++;
-  if(qIndex>=questions.length){
-    alert('Fim! Acertou: '+score+'/'+questions.length);
-    qIndex=0; score=0;
+  if(qIndex >= questions.length){
+    Swal.fire({
+      title: 'Fim do Quiz!',
+      html: `Você acertou <strong>${score}</strong> de <strong>${questions.length}</strong>.`,
+      icon: 'success',
+      confirmButtonText: 'Reiniciar quiz'
+    }).then(()=>{
+      qIndex = 0; score = 0; loadQ();
+    });
+    return;
   }
   loadQ();
 });
-document.getElementById('restart').addEventListener('click',()=>{ qIndex=0; score=0; loadQ(); });
-loadQ();
+
+// Recomeçar com confirmação SweetAlert
+document.getElementById('restart').addEventListener('click',()=>{
+  Swal.fire({
+    title: 'começar quiz?',
+    text: 'Isso irá zerar suas respostas e pontuação.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, iniciar!',
+    cancelButtonText: 'Cancelar'
+  }).then(result=>{
+    if(result.isConfirmed){
+      qIndex = 0; score = 0; quizStarted = true;
+      loadQ();
+      Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz reiniciado', showConfirmButton:false, timer:1200});
+    }
+  });
+});
+
+// confetti simples (mantive sua função original)
 function confetti(){ 
   const c=document.createElement('div');
   c.style.position='fixed';
@@ -377,7 +459,7 @@ function confetti(){
   setTimeout(()=>c.remove(),1400);
 }
 
-// --- Dino Game ---
+// --- Dino Game (com SweetAlert na colisão) ---
 const openGame=document.getElementById('openGame'); 
 const gameModal=document.getElementById('gameModal'); 
 const closeGame=document.getElementById('closeGame');
@@ -387,45 +469,56 @@ const gameArea=document.getElementById('gameArea');
 
 function initGame(){
   currentScore=0; scoreEl.innerText=currentScore; cactusPos=12; cactus.style.right=cactusPos+'px';
-  gameArea.addEventListener('click',jump);
+  // remove listeners duplicados por segurança
+  gameArea.removeEventListener('click', jump);
+  gameArea.addEventListener('click', jump);
+  // limpa qualquer jogo anterior
+  if(gameInterval) clearInterval(gameInterval);
   gameInterval=setInterval(()=>{
     cactusPos -=6; 
     if(cactusPos<-60){cactusPos=420; currentScore++; scoreEl.innerText=currentScore;}
     cactus.style.right=cactusPos+'px';
-    if(cactusPos<90 && cactusPos>40 && dinoY<36){ stopGame(); alert('Fim! Pontos: '+currentScore);}
+    // colisão: quando o cacto está próximo e o dino baixo
+    if(cactusPos<90 && cactusPos>40 && dinoY<36){
+      // parar o jogo primeiro
+      stopGame();
+      // mostrar SweetAlert com pontuação
+      Swal.fire({
+        title: 'Fim!',
+        html: `Pontos: <strong>${currentScore}</strong>`,
+        icon: 'info',
+        confirmButtonText: 'Fechar'
+      });
+    }
   },80);
 }
 function stopGame(){ 
-  clearInterval(gameInterval); gameInterval=null; cactusPos=12; cactus.style.right='12px'; jumping=false;
+  if(gameInterval) clearInterval(gameInterval);
+  gameInterval=null; cactusPos=12; cactus.style.right='12px'; jumping=false;
 }
 function jump(){ 
   if(jumping) return; 
   jumping=true; 
   let up=0; 
+  // mantendo variável dinoY para verificar colisão
+  dinoY = 0;
   const upI=setInterval(()=>{
     if(up>38){ 
       clearInterval(upI); 
       const downI=setInterval(()=>{
-        if(up<=0){ clearInterval(downI); jumping=false; } 
-        up-=6; dino.style.transform='translateY(-'+up+'px)';
+        if(up<=0){ clearInterval(downI); jumping=false; dinoY = 0; } 
+        up-=6; dino.style.transform='translateY(-'+up+'px)'; dinoY = up;
       },40);
-    } else { up+=6; dino.style.transform='translateY(-'+up+'px)'; }
+    } else { up+=6; dino.style.transform='translateY(-'+up+'px)'; dinoY = up; }
   },40)
 }
 
 openGame.addEventListener('click',()=>{gameModal.style.display='flex'; initGame();});
 closeGame.addEventListener('click',()=>{gameModal.style.display='none'; stopGame();});
 
-// --- Tour ---
-document.getElementById('startTour').addEventListener('click',()=>{
-  document.getElementById('carousel').scrollIntoView({behavior:'smooth'}); 
-  setTimeout(()=>{document.querySelector('.thumb').click()},800);
-});
-
-// --- Pulo com espaço ---
-document.addEventListener('keydown',e=>{ if(e.key===' '){ if(gameModal.style.display==='flex') jump(); } });
-// Fade-out e zoom-out ao iniciar tour
-document.getElementById('startTour').addEventListener('click',()=>{
+// --- Tour: only one handler, no auto-click on thumb, reveal main after animation ---
+const startBtn = document.getElementById('startTour');
+startBtn.addEventListener('click', ()=>{
   const screen = document.getElementById('startScreen');
   const card = document.getElementById('startCard');
   // animação de saída
@@ -438,21 +531,31 @@ document.getElementById('startTour').addEventListener('click',()=>{
     screen.style.display='none';
     document.querySelector('main').style.display='block';
     document.getElementById('carousel').scrollIntoView({behavior:'smooth'});
-    setTimeout(()=>{document.querySelector('.thumb')?.click()},800);
+    // chamar o prompt do quiz APÓS a entrada, se quiser. Não abrimos nenhum modal automático.
+    setTimeout(()=>{ promptStartQuiz(); },700);
   },800);
 });
-// --- Theme toggle ---
+
+// --- Pulo com espaço ---
+document.addEventListener('keydown',e=>{ if(e.key===' '){ if(gameModal.style.display==='flex') jump(); } });
+
+// --- Theme toggle (simples swal informando mudança) ---
 const themeToggle = document.getElementById('themeToggle');
 themeToggle.addEventListener('click', () => {
-  if(document.documentElement.dataset.theme === 'dark'){
-    document.documentElement.dataset.theme = 'light';
-    themeToggle.innerText = '🌙 Dark Mode';
-  } else {
-    document.documentElement.dataset.theme = 'dark';
-    themeToggle.innerText = '☀️ Light Mode';
-  }
+  // alterna tema
+  const newTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = newTheme;
+  themeToggle.innerText = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+  // swal simples informando que está mudando
+  Swal.fire({
+    title: 'Alterando tema...',
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 900
+  });
 });
+
 </script>
 </body>
 </html>
-
