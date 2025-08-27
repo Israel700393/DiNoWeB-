@@ -358,14 +358,8 @@ function loadQ(){
 let quizStarted = false;
 
 function promptStartQuiz(){
-  Swal.fire({
-    title: 'Pronto para começar o quiz?',
-    text: 'Vamos testar seus conhecimentos sobre dinossauros!',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Sim, começar',
-    cancelButtonText: 'Agora não'
-  }).then(result=>{
+  Swal.fire
+   .then(result=>{
     if(result.isConfirmed){
       quizStarted = true;
       qIndex = 0;
@@ -559,5 +553,6 @@ themeToggle.addEventListener('click', () => {
 </script>
 </body>
 </html>
+
 
 
