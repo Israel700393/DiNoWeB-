@@ -183,10 +183,9 @@ main{display:none}
   
   </div>
   <nav>
-    <a href="#">Home</a>
-    <a href="#">Sobre</a>
-    <a href="#">Quiz</a>
-    <a href="#">Contato</a>
+    <a href="#hero">Home</a>
+    <a href=#video>videos</a>
+    <a href="#quiz">Quiz</a>
   </nav>
  <div style="margin-left:auto;">
   <button id="themeToggle" class="play-btn">🌙 Dark Mode</button>
@@ -215,7 +214,7 @@ main{display:none}
 
     <aside class="card" style="display:flex;flex-direction:column;gap:12px">
       <div>
-        <strong>Vídeo recomendado</strong>
+        <strong id=video>Vídeo recomendado</strong>
         <div style="margin-top:8px">
           <iframe width="100%" height="180" src="https://www.youtube.com/embed/M-Y6U_5iOl4" frameborder="0" allowfullscreen title="Vídeo dinossauro"></iframe>
         </div>
@@ -620,4 +619,5 @@ themeToggle.addEventListener('click', () => {
 </script>
 </body>
 </html>
+
 
