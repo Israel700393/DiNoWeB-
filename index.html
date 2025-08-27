@@ -107,6 +107,60 @@ body{
 .card{background:var(--card);} 
 /* Hide main until tour starts */
 main{display:none}
+ header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    background-color: var(--card);
+    border-bottom-left-radius: var(--radius);
+    border-bottom-right-radius: var(--radius);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 12px;
+  }
+
+  .logo h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--accent);
+  }
+
+  nav a {
+    text-decoration: none;
+    color: var(--text);
+    margin-left: 20px;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+
+  nav a:hover {
+    color: var(--accent2);
+  }
+
+
+  @media (max-width: 600px) {
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    nav {
+      margin-top: 10px;
+    }
+  }
 </style>
 
 <!-- SweetAlert2 CDN -->
@@ -114,7 +168,7 @@ main{display:none}
 
 </head>
 <body>
-<header>
+
 <!-- Start Screen -->
 <div id="startScreen">
   <div class="card" id="startCard">
@@ -123,10 +177,23 @@ main{display:none}
     <button id="startTour">Iniciar Tour</button>
   </div>
 </div>
-<div style="margin-left:auto;">
+
+<header>
+    <h1>DINOWORD</h1>
+  
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Sobre</a>
+    <a href="#">Quiz</a>
+    <a href="#">Contato</a>
+  </nav>
+ <div style="margin-left:auto;">
   <button id="themeToggle" class="play-btn">🌙 Dark Mode</button>
 </div>
+
 </header>
+
 
 <main>
   <!-- Hero -->
@@ -208,7 +275,7 @@ main{display:none}
   <!-- Quiz -->
   <section style="margin-top:18px" class="card quiz" id="quiz">
     <strong>Quiz Rápido — o que você sabe?</strong>
-    <div style="margin-top:8px;color:var(--muted)">Responda e veja o resultado no final — clique em recomeçar para "iniciar"!</div>
+    <div style="margin-top:8px;color:var(--muted)">Responda e veja o resultado no final !</div>
     <div id="questionArea" style="margin-top:12px">
       <div id="qText"></div>
       <div class="options" id="options"></div>
@@ -257,7 +324,7 @@ main{display:none}
   </div>
 
   <footer>
-    <small>Feito para crianças: conteúdo educativo. DINOWORD todos direitos reservados.</small>
+    <small>Feito para crianças: conteúdo educativo. israel todos direitos reservados.</small>
   </footer>
 </main>
 
@@ -367,7 +434,7 @@ function promptStartQuiz(){
       loadQ();
       Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz iniciado', showConfirmButton:false, timer:1200});
     } else {
-      document.getElementById('qText').innerHTML = '<em>Clique em "Recomeçar" para iniciar o quiz quando quiser.</em>';
+      document.getElementById('qText').innerHTML = '<em>Clique em "Recomeçar" para iniciar o quiz.</em>';
       optionsEl.innerHTML = '';
     }
   });
@@ -553,6 +620,3 @@ themeToggle.addEventListener('click', () => {
 </script>
 </body>
 </html>
-
-
-
