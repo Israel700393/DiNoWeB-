@@ -637,25 +637,17 @@ themeToggle.addEventListener('click', () => {
   document.documentElement.dataset.theme = newTheme;
   themeToggle.innerText = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
   // swal simples informando que está mudando
-  Swal.firedark({
-    title: 'Alterando ☀️ tema...🌙 ',
+  Swal.fire({
+    title: 'Alterando tema...',
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
     timer: 900
   });
 });
-Swal.firelight({
-    title: 'Alterando 🌙 tema...☀️ ',
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 900
-  });
-});
-
 </script>
 </body>
 </html>
+
 
 
