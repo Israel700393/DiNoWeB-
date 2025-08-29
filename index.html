@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Dinossauros para Crianças • Mundo Jurássico</title>
-<meta name="description" content="Site educativo e interativo sobre dinossauros para crianças: vídeos, imagens, quiz, timeline e um joguinho do dinossauro.feito totalmente pensado e desenvolvido por ISRAEL RANGEL." />
+<meta name="description" content="Site educativo e interativo sobre dinossauros para crianças: vídeos, imagens, quiz e um timeline.totalmente pensado e desenvolvido por ISRAEL RANGEL." />
 <style>
 :root{
   --bg:#F7FBF9; --accent:#6AA84F; --accent2:#8FB339; --card:#FFFFFF; --muted:#6b6b6b;
@@ -201,7 +201,7 @@ main{display:none}
 <div id="startScreen">
   <div class="card" id="startCard">
     <h1>Mundo Jurássico</h1>
-    <p>Descubra dinossauros, vídeos, imagens, quiz e um joguinho divertido!</p>
+    <p>Descubra dinossauros, e aprenda sobre eles com: videos, fotos e um quiz divertido!</p>
     <button id="startTour">Iniciar Tour</button>
   </div>
 </div>
@@ -304,7 +304,7 @@ main{display:none}
   <!-- Quiz -->
   <section style="margin-top:18px" class="card quiz" id="quiz">
     <strong id="quiz">Quiz Rápido — o que você sabe?</strong>
-    <div style="margin-top:8px;color:var(--muted)">para Iniciar cilque em "Recomeçar"!</div>
+    <div style="margin-top:8px;color:var(--muted)">Para iniciar clique em "Recomeçar"!</div>
     <div id="questionArea" style="margin-top:12px">
       <div id="qText"></div>
       <div class="options" id="options"></div>
@@ -461,7 +461,7 @@ function promptStartQuiz(){
       qIndex = 0;
       score = 0;
       loadQ();
-      Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz iniciado', showConfirmButton:false, timer:1200});
+      Swal.fire({toast:true, position:'center', icon:'success', title:'Quiz iniciado', showConfirmButton:false, timer:1200});
     } else {
       document.getElementById('qText').innerHTML = '<em>Clique em "Recomeçar" para iniciar o quiz.</em>';
       optionsEl.innerHTML = '';
@@ -480,12 +480,12 @@ function handleAnswer(el,i){
     el.classList.add('correct');
     score++;
     document.getElementById('soundCorrect').play();
-    Swal.fire({toast:true, position:'top-end', icon:'success', title:'Acertou!', showConfirmButton:false, timer:1000});
+    Swal.fire({toast:true, position:'center', icon:'success', title:'Acertou!', showConfirmButton:false, timer:1000});
     confetti();
   } else {
     el.classList.add('wrong');
     document.getElementById('soundWrong').play();
-    Swal.fire({toast:true, position:'top-end', icon:'error', title:'Errado!', showConfirmButton:false, timer:1000});
+    Swal.fire({toast:true, position:'center', icon:'error', title:'Errado!', showConfirmButton:false, timer:1000});
   }
   document.querySelectorAll('#options .option').forEach(o=>o.style.pointerEvents='none');
 }
@@ -528,7 +528,7 @@ document.getElementById('restart').addEventListener('click',()=>{
     if(result.isConfirmed){
       qIndex = 0; score = 0; quizStarted = true;
       loadQ();
-      Swal.fire({toast:true, position:'top-end', icon:'success', title:'Quiz reiniciado', showConfirmButton:false, timer:1200});
+      Swal.fire({toast:true, position:'center', icon:'success', title:'Quiz reiniciado', showConfirmButton:false, timer:1200});
     }
   });
 });
@@ -549,7 +549,7 @@ function confetti(){
   setTimeout(()=>c.remove(),1400);
 }
 
-// --- Dino Game (com SweetAlert na colisão) ---
+// --- Dino Game---
 const openGame=document.getElementById('openGame'); 
 const gameModal=document.getElementById('gameModal'); 
 const closeGame=document.getElementById('closeGame');
@@ -559,7 +559,7 @@ const gameArea=document.getElementById('gameArea');
 
 function initGame(){
   currentScore=0; scoreEl.innerText=currentScore; cactusPos=12; cactus.style.right=cactusPos+'px';
-  // remove listeners duplicados por segurança
+  // remove listeners duplicados 
   gameArea.removeEventListener('click', jump);
   gameArea.addEventListener('click', jump);
   // limpa qualquer jogo anterior
@@ -572,7 +572,7 @@ function initGame(){
     if(cactusPos<90 && cactusPos>40 && dinoY<36){
       // parar o jogo primeiro
       stopGame();
-      // mostrar SweetAlert com pontuação
+      // SweetAlert com pontuação
       Swal.fire({
         title: 'Fim!',
         html: `Pontos: <strong>${currentScore}</strong>`,
@@ -621,7 +621,6 @@ startBtn.addEventListener('click', ()=>{
     screen.style.display='none';
     document.querySelector('main').style.display='block';
     document.getElementById('carousel').scrollIntoView({behavior:'smooth'});
-    // chamar o prompt do quiz APÓS a entrada, se quiser. Não abrimos nenhum modal automático.
     setTimeout(()=>{ promptStartQuiz(); },700);
   },800);
 });
@@ -629,25 +628,23 @@ startBtn.addEventListener('click', ()=>{
 // --- Pulo com espaço ---
 document.addEventListener('keydown',e=>{ if(e.key===' '){ if(gameModal.style.display==='flex') jump(); } });
 
-// --- Theme toggle (simples swal informando mudança) ---
+// --- Theme toggle ---
 const themeToggle = document.getElementById('themeToggle');
 themeToggle.addEventListener('click', () => {
   // alterna tema
   const newTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = newTheme;
   themeToggle.innerText = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
-  // swal simples informando que está mudando
+  // swal 
   Swal.fire({
     title: 'Alterando tema...',
     toast: true,
-    position: 'top-end',
+    position: 'top',
     showConfirmButton: false,
     timer: 900
   });
 });
+
 </script>
 </body>
 </html>
-
-
-
