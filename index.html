@@ -128,10 +128,14 @@ footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted)}
   --muted:#00a01d9f;
   --text:#158a15;
 }
-body{
-  background:var(--bg);
-  color:var(--text);
+body {
+  background: url('image/fundoo.png') center center / cover no-repeat fixed;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center center;
+  color: var(--text);
 }
+
 .card{background:var(--card);} 
 /* Hide main until tour starts */
 main{display:none}
@@ -189,6 +193,7 @@ main{display:none}
       margin-top: 10px;
     }
   }
+  
 </style>
 
 <!-- SweetAlert2 CDN -->
@@ -208,7 +213,6 @@ main{display:none}
 
 <header id="topo">
     <h1>DINOWORD</h1>
-  
   </div>
 
  <div style="margin-left:auto;">
@@ -401,7 +405,7 @@ document.getElementById('closeModal').addEventListener('click',()=>{
   if(vc) vc.innerHTML='';
 });
 
-// --- Flashcards com voz ---
+// --- Flashcards com voz ---  
 document.querySelectorAll('.card-flip').forEach(cf=>{
   cf.addEventListener('click',()=>{
     cf.classList.toggle('is-flipped');
@@ -533,22 +537,6 @@ document.getElementById('restart').addEventListener('click',()=>{
   });
 });
 
-// confetti 
-function confetti(){ 
-  const c=document.createElement('div');
-  c.style.position='fixed';
-  c.style.left=Math.random()*80+'%';
-  c.style.top='20%';
-  c.style.width='12px';
-  c.style.height='12px';
-  c.style.background=['#FFD166','#06D6A0','#118AB2'][Math.floor(Math.random()*3)];
-  c.style.borderRadius='3px';
-  c.style.opacity='0.95';
-  document.body.appendChild(c);
-  setTimeout(()=>{c.style.transform='translateY(220px) rotate(120deg)'; c.style.transition='all 1.1s ease';},10);
-  setTimeout(()=>c.remove(),1400);
-}
-
 // --- Dino Game---
 const openGame=document.getElementById('openGame'); 
 const gameModal=document.getElementById('gameModal'); 
@@ -606,7 +594,7 @@ function jump(){
 openGame.addEventListener('click',()=>{gameModal.style.display='flex'; initGame();});
 closeGame.addEventListener('click',()=>{gameModal.style.display='none'; stopGame();});
 
-// --- Tour: only one handler, no auto-click on thumb, reveal main after animation ---
+// --- Tour: Animação de entrada ---
 const startBtn = document.getElementById('startTour');
 startBtn.addEventListener('click', ()=>{
   const screen = document.getElementById('startScreen');
@@ -644,8 +632,6 @@ themeToggle.addEventListener('click', () => {
     timer: 900
   });
 });
-
 </script>
 </body>
 </html>
-
