@@ -112,27 +112,26 @@ footer{margin-top:28px;padding:18px;text-align:center;color:#ffffff9f;}
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
 :root{
-  --bg:#b3a493;
-   --accent:#bdbdbd;
-   --accent2:#694112; 
-   --card:#96786b;
-    --muted:#000000;
-  --radius:14px;
-  --text:#311c00;
+  --bg:#030c35;
+  --accent:#007268;
+  --accent2:#1c2036;
+  --card:#383e4e;
+  --muted:#ffffffff;
+  --text:#fffff9ff;
 }
 [data-theme="dark"]{
   --bg:#030c35;
-  --accent:#415e69;
+  --accent:#00723d;
   --accent2:#1c2036;
-  --card:#383e4e;
-  --muted:#0090d39f;
-  --text:#a7a7a7;
+  --card:#1a4236;
+  --muted:#2abe429f;
+  --text:#4c963a;
 }
 body {
- background: url('image/fundoo.png') center center / cover no-repeat fixed;
-  background-attachment: fixed;
+  background: url('image/fundoo.png') center center / cover no-repeat ;
   background-size: cover;
-  background-position: center center;
+  background-position: center 0px;
+  transition: 0.1s ease;
   color: var(--text);
 }
 
@@ -202,6 +201,7 @@ main{display:none}
 </head>
 <body>
 
+
 <!-- Start Screen -->
 <div id="startScreen">
   <div class="card" id="startCard">
@@ -213,6 +213,11 @@ main{display:none}
 
 <header id="topo">
     <h1>DINOWORD</h1>
+    <select id="langSelector" style="margin-left:12px;">
+  <option value="pt">🇧🇷 Português</option>
+  <option value="en">🇺🇸 English</option>
+  <option value="es">🇪🇸 Español</option>
+</select>
   </div>
 
  <div style="margin-left:auto;">
@@ -261,7 +266,7 @@ main{display:none}
       </div>
   </section>
 
-  <!-- Galeria -->
+  <!-- Galeria: Fotos e videos sobre -->
   <section style="margin-top:18px" class="card">
     <strong id="galery">Galeria Interativa</strong>
     <div class="grid" style="margin-top:12px">
@@ -293,32 +298,32 @@ main{display:none}
     </div>
   </section>
 
-  <!-- Flashcards -->
+  <!-- Flashcards com voz -->
   <section style="margin-top:18px" class="card">
     <strong>Flashcards — toque para virar e ouvir</strong>
     <div class="flashcards" style="margin-top:12px">
       <div class="card-flip" tabindex="0">
         <div class="inner">
-          <div class="face front"><div><strong>Tiranossauro</strong><div style="font-size:12px;color:var(--muted)">Toque para virar</div></div></div>
+          <div class="face front"><div><strong style="color: #000000;">Tiranossauro</strong><div style="font-size:18px;color:#1c2036;">Toque para virar</div></div></div>
           <div class="face back"><div>O T. rex viveu há cerca de 68–66 milhões de anos e era um dos maiores carnívoros.</div></div>
         </div>
       </div>
       <div class="card-flip" tabindex="0">
         <div class="inner">
-          <div class="face front"><div><strong>Herbívoros</strong><div style="font-size:12px;color:var(--muted)">Toque para virar</div></div></div>
+          <div class="face front"><div><strong style="color: #000000;">Herbívoros</strong><div style="font-size:18px;color:#1c2036;">Toque para virar</div></div></div>
           <div class="face back"><div>Muitos dinossauros eram herbívoros e comiam plantas, folhagens e frutas pré-históricas.</div></div>
         </div>
       </div>
       <div class="card-flip" tabindex="0">
         <div class="inner">
-          <div class="face front"><div><strong>Fósseis</strong><div style="font-size:12px;color:var(--muted)">Toque para virar</div></div></div>
+          <div class="face front"><div><strong style="color: #000000;"> Fósseis</strong><div style="font-size:18px;color:#1c2036;">Toque para virar</div></div></div>
           <div class="face back"><div>Fósseis são restos preservados que ajudam os cientistas a entender como os dinossauros viviam.</div></div>
         </div>
       </div>
     </div>
   </section>
  <div>
-        <strong style="color:#000000;">Filminho para entender!! </strong>
+        <strong style="color:#ffffff;">Filminho para entender!! </strong>
         <div style="margin-top:8px; ">
           <iframe width="100%" height="180" src="https://www.youtube.com/embed/ZFcg9i4FaRM" frameborder="0" allowfullscreen title="Vídeo dinossauro"></iframe>
         </div>
@@ -337,12 +342,12 @@ main{display:none}
     </div>
   </section>
  <div>
-        <strong style="color:#000000";>A evolução e História </strong>
+        <strong style="color:#ffffff";>A evolução e História </strong>
         <div style="margin-top:8px;">
           <iframe width="100%" height="180" src="https://www.youtube.com/embed/JHx03as_YZE" frameborder="0" allowfullscreen title="Vídeo dinossauro"></iframe>
         </div>
       </div>
-  <!-- Timeline -->
+  <!-- Timeline das eras -->
   <section style="margin-top:18px" class="card">
     <strong>Timeline — as eras</strong>
     <div style="margin-top:10px;color:var(--muted)">Passe para ver curiosidades.</div>
@@ -655,7 +660,12 @@ themeToggle.addEventListener('click', () => {
     timer: 900
   });
 });
+
+window.addEventListener('scroll', () => {
+  const offset = window.scrollY;
+  document.body.style.backgroundPositionY = `${offset * 0.5}px`; // ajuste a velocidade aqui
+});
+
 </script>
 </body>
 </html>
-
