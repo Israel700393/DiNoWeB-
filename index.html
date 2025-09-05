@@ -113,7 +113,7 @@ footer{margin-top:28px;padding:18px;text-align:center;color:#ffffff9f;}
 }
 :root{
   --bg:#030c35;
-  --accent:#91b0f3;
+  --accent:#afc9ff;
   --accent2:#30323b;
   --card:#646572;
   --muted:#ffffffff;
@@ -331,10 +331,14 @@ main{display:none}
   <!-- Quiz -->
   <section style="margin-top:18px" class="card quiz" id="quiz">
     <strong id="quiz">Quiz Rápido — o que você sabe?</strong>
-    <div style="margin-top:8px;color:var(--muted)">Para iniciar clique em "Recomeçar"!</div>
+    <div style="margin-top:8px;color:#fff5f5;">Para iniciar clique em "Recomeçar"!</div>
     <div id="questionArea" style="margin-top:12px">
       <div id="qText"></div>
-      <div class="options" id="options"></div>
+      <div class="options" id="options">
+        <div class="option" tabindex="0">Tiranossauro</div>
+        <div class="option" tabindex="0">Tricerátopo</div>
+        <div class="option" tabindex="0">Velociraptor</div>
+      </div>
     </div>
     <div style="margin-top:12px;display:flex;gap:8px">
       <button class="btn" id="nextQ">Próxima</button>
@@ -663,12 +667,117 @@ themeToggle.addEventListener('click', () => {
 
 window.addEventListener('scroll', () => {
   const offset = window.scrollY;
-  document.body.style.backgroundPositionY = `${offset * 0.5}px`; 
+  document.body.style.backgroundPositionY = `${offset * 0.1}px`;
 });
+
+// Traduções principais
+const translations = {
+  pt: {
+    startTitle: "Mundo Jurássico",
+    startDesc: "Descubra dinossauros, e aprenda sobre eles com: vídeos, fotos e um quiz!",
+    startBtn: "Iniciar Tour",
+    explore: "Explorar Dinossauros",
+    exploreHint: "Toque nos cards para aprender",
+    video: "Vídeo recomendado",
+    game: "Joguinho: Dino Pula",
+    gameHint: "Clique no botão para iniciar o joguinho — divertido e simples!",
+    openGame: "Abrir Jogo",
+    gallery: "Galeria Interativa",
+    flashcards: "Flashcards — toque para virar e ouvir",
+    quiz: "Quiz Rápido — o que você sabe?",
+    quizHint: "Para iniciar clique em \"Recomeçar\"!",
+    nextQ: "Próxima",
+    restart: "Recomeçar",
+    timeline: "Timeline — as eras",
+    timelineHint: "Passe para ver curiosidades.",
+    footer: "Feito para crianças: conteúdo educativo. DINOWORD todos direitos reservados."
+  },
+  en: {
+    startTitle: "Jurassic World",
+    startDesc: "Discover dinosaurs and learn about them with: videos, photos, and a quiz!",
+    startBtn: "Start Tour",
+    explore: "Explore Dinosaurs",
+    exploreHint: "Tap the cards to learn",
+    video: "Recommended Video",
+    game: "Mini-game: Dino Jump",
+    gameHint: "Click the button to start the fun game — simple and entertaining!",
+    openGame: "Open Game",
+    gallery: "Interactive Gallery",
+    flashcards: "Flashcards — tap to flip and listen",
+    quiz: "Quick Quiz — what do you know?",
+    quizHint: "Click \"Restart\" to begin!",
+    nextQ: "Next",
+    restart: "Restart",
+    timeline: "Timeline — the eras",
+    timelineHint: "Swipe to see fun facts.",
+    footer: "Made for kids: educational content. DINOWORD all rights reserved."
+  },
+  es: {
+    startTitle: "Mundo Jurásico",
+    startDesc: "Descubre dinosaurios y aprende sobre ellos con: videos, fotos y un quiz!",
+    startBtn: "Iniciar Tour",
+    explore: "Explorar Dinosaurios",
+    exploreHint: "Toca las tarjetas para aprender",
+    video: "Video recomendado",
+    game: "Mini-juego: Dino Salta",
+    gameHint: "Haz clic en el botón para iniciar el juego — ¡divertido y sencillo!",
+    openGame: "Abrir Juego",
+    gallery: "Galería Interactiva",
+    flashcards: "Flashcards — toca para girar y escuchar",
+    quiz: "Quiz Rápido — ¿qué sabes?",
+    quizHint: "Haz clic en \"Reiniciar\" para comenzar!",
+    nextQ: "Siguiente",
+    restart: "Reiniciar",
+    timeline: "Línea de tiempo — las eras",
+    timelineHint: "Desliza para ver curiosidades.",
+    footer: "Hecho para niños: contenido educativo. DINOWORD todos los derechos reservados."
+  }
+};
+
+// Função para aplicar traduções
+function applyTranslations(lang) {
+  const t = translations[lang];
+  if (!t) return;
+
+  // Start screen
+  document.querySelector("#startCard h1").innerText = t.startTitle;
+  document.querySelector("#startCard p").innerText = t.startDesc;
+  document.querySelector("#startTour").innerText = t.startBtn;
+
+  // Hero
+  document.querySelector(".hero strong").innerText = t.explore;
+  document.querySelector(".hero small").innerText = t.exploreHint;
+
+  // Sidebar
+  document.querySelector("aside strong").innerText = t.video;
+  document.querySelector("aside .btn").innerText = t.openGame;
+  document.querySelector("aside div:nth-child(2) div").innerText = t.gameHint;
+  document.querySelector("aside div:nth-child(2) strong").innerText = t.game;
+
+  // Gallery
+  document.querySelector("#galery").innerText = t.gallery;
+
+  // Flashcards
+  document.querySelectorAll("section.card strong")[2].innerText = t.flashcards;
+
+  // Quiz
+  document.querySelector("#quiz strong").innerText = t.quiz;
+  document.querySelector("#quiz div").innerText = t.quizHint;
+  document.querySelector("#nextQ").innerText = t.nextQ;
+  document.querySelector("#restart").innerText = t.restart;
+
+  // Footer
+  document.querySelector("footer small").innerText = t.footer;
+}
+
+// Troca de idioma
+document.getElementById("langSelector").addEventListener("change", e => {
+  applyTranslations(e.target.value);
+});
+
+// Aplica idioma inicial (pt)
+applyTranslations("pt");
 
 </script>
 </body>
 </html>
-
-
-
