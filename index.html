@@ -113,11 +113,11 @@ footer{margin-top:28px;padding:18px;text-align:center;color:#ffffff9f;}
 }
 :root{
   --bg:#030c35;
-  --accent:#afc9ff;
-  --accent2:#30323b;
-  --card:#646572;
-  --muted:#ffffffff;
-  --text:#fffff9ff;
+  --accent:#89aeff;
+  --accent2:#2c2c2c;
+  --card:#dbdbdb;
+  --muted:rgb(46, 46, 46);
+  --text:rgb(0, 0, 0);
 }
 [data-theme="dark"]{
   --bg:#030c35;
@@ -648,14 +648,32 @@ startBtn.addEventListener('click', ()=>{
 // --- Pulo com espaço ---
 document.addEventListener('keydown',e=>{ if(e.key===' '){ if(gameModal.style.display==='flex') jump(); } });
 
-// --- Theme toggle ---
+// Define backgrounds para cada tema
+const backgrounds = {
+  1: 'url("image/fundoo.png") center/cover no-repeat', // Dark
+  2: 'url("image/fundodinos.png") center/cover no-repeat'  // Light
+};
+
+// Função para aplicar tema
+function setTheme(themeNum) {
+  if (themeNum === 1) {
+    document.documentElement.dataset.theme = 'dark';
+    document.body.style.background = backgrounds[1];
+    themeToggle.innerText = '☀️ Light Mode';
+  } else if (themeNum === 2) {
+    document.documentElement.dataset.theme = 'light';
+    document.body.style.background = backgrounds[2];
+    themeToggle.innerText = '🌙 Dark Mode';
+  }
+}
+
+// Botão de troca de tema
 const themeToggle = document.getElementById('themeToggle');
+let currentTheme = 2; // Começa com light
 themeToggle.addEventListener('click', () => {
-  // alterna tema
-  const newTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = newTheme;
-  themeToggle.innerText = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
-  // swal 
+  currentTheme = currentTheme === 1 ? 2 : 1; // Alterna entre 1 e 2
+  setTheme(currentTheme);
+
   Swal.fire({
     title: 'Alterando tema...',
     toast: true,
@@ -664,6 +682,18 @@ themeToggle.addEventListener('click', () => {
     timer: 900
   });
 });
+
+// Aplica tema inicial
+setTheme(currentTheme);
+  // swal 
+  Swal.fire({
+    title: 'Alterando tema...',
+    toast: true,
+    position: 'top',
+    showConfirmButton: false,
+    timer: 900
+  });
+
 
 window.addEventListener('scroll', () => {
   const offset = window.scrollY;
